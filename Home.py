@@ -27,8 +27,9 @@ def main():
     # active - The raw count of microbusinesses in the county. Not provided for the test set.""")
 
 
-    # st.title("Censur Starter")
-    # st.write(census_starter_df)
+    st.title("Census Starter")
+    st.write(census_starter_df)
+    census(census_starter_df)
     # st.title("Revealed Test")
     # st.write(revealed_test_df)
     # st.title("Sample Submuission")
@@ -41,6 +42,15 @@ def main():
     banner_image=image.resize((1300,500))
     st.image(banner_image)
     revealed_eda(revealed_test_df)
+
+def census(census_df):
+    bb_pct=st.checkbox("Black PPL",)
+    clg_ppl=st.checkbox("College Graduates",)
+    fb_ppl=st.checkbox("Foreigh Born",)
+    it_ppl=st.checkbox("IT Workers")
+    hh_inc=st.checkbox("Median House Hold Income")
+    if bb_pct:
+        st.write("bb ppl")
 
 #Function to perfomr EDA for revealed dataset
 def revealed_eda(revl_df):
