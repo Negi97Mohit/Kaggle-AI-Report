@@ -44,27 +44,35 @@ def main():
     revealed_eda(revealed_test_df)
 
 def census(census_df):
-    bb_pct=st.checkbox("Black PPL",)
-    clg_ppl=st.checkbox("College Graduates",)
-    fb_ppl=st.checkbox("Foreigh Born",)
-    it_ppl=st.checkbox("IT Workers")
-    hh_inc=st.checkbox("Median House Hold Income")
     
     checked_box=[0,0,0,0,0]
+    btns_pressed=['pct_bb','pct_college','pct_foreign','pct_it','median_hh ']
+    selected_year=st.multiselect('Select the year',['2017','2018','2019','2020','2021'])
+    selected_demo=st.multiselect('Select the Demographic',btns_pressed)
+    cols_name=census_df.columns
+    if len(selected_year)!=0:
+        selected_cols_name=[]
+        for year_select in selected_year:
+            for col_name in cols_name:
+                if year_select in col_name:
+                    selected_cols_name.append(col_name)                    
+    selected_year_df=census_df[selected_cols_name]
+    st.write(selected_year_df)
     
-    #if black people checked
-    if bb_pct:
-        st.write('Black people')    
-    elif clg_ppl:
-        st.write('college ppl')    
-    elif fb_ppl:
-        st.write('foreign born ppl')    
-    elif it_ppl:
-        st.write('IT ppl')    
-    elif hh_inc:
-        st.write('house hold income')    
-    else:
-        st.write("Select an option bro")
+    if len(selected_demo)!=0:
+        selected_cols_demo=[]
+        for demo in selected_demo:
+            for selec_year in selected_cols_name:
+                if demo in selec_year:
+                    selected_cols_demo.append(selec_year)
+        
+        selected_df=census_df[selected_cols_demo]
+        st.write(selected_df)    
+
+        fig=px.line(selected_df)
+        fig.update_layout(width=1100,height=500)
+        st.plotly_chart(fig)
+        
 #Function to perfomr EDA for revealed dataset
 def revealed_eda(revl_df):
     cols1,cols2=st.columns(2)
