@@ -47,17 +47,18 @@ def census(census_df):
     btns_pressed=['pct_bb','pct_college','pct_foreign','pct_it']
     selected_year=st.multiselect('Select the year',['2017','2018','2019','2020','2021'])
     selected_demo=st.multiselect('Select the Demographic',btns_pressed)
+    grp_demo=st.button('By Each Year Demographic')
     cols_name=census_df.columns
     cols1,cols2=st.columns(2)
     with cols1:
-        if len(selected_year)!=0:
-            selected_cols_name=[]
-            for year_select in selected_year:
-                for col_name in cols_name:
-                    if year_select in col_name:
-                        selected_cols_name.append(col_name)                    
-        selected_year_df=census_df[selected_cols_name]
-        st.write(selected_year_df)
+                if len(selected_year)!=0:
+                    selected_cols_name=[]
+                    for year_select in selected_year:
+                        for col_name in cols_name:
+                            if year_select in col_name:
+                                selected_cols_name.append(col_name)                    
+                selected_year_df=census_df[selected_cols_name]
+                st.write(selected_year_df)
     with cols2:    
         if len(selected_demo)!=0:
             selected_cols_demo=[]
@@ -68,24 +69,51 @@ def census(census_df):
             
             selected_df=census_df[selected_cols_demo]
             st.write(selected_df)    
-    try:
-        fig=px.line(selected_df)
-        fig.update_layout(width=1100,height=500)
-        st.plotly_chart(fig)
-        st.write('Median HouseHold Income')
-        median_col=[]
-        for col in selected_cols_name:
-            if "median_hh" in col:
-                median_col.append(col)
+    
+    #Generates grpah for each year.
+    if grp_demo:
+        try:
+            
+            for (colsName,colsData) in selected_df.iteritems():
+                fig=px.line(colsData)
+                fig.update_layout(width=1100,height=500)
+                st.plotly_chart(fig)
                 
-        median_Df=census_df[median_col]
-        fig1=px.line(median_Df)
-        fig1.update_layout(width=1100,height=500)
-        st.plotly_chart(fig1)
-        
-    except:
-        st.write("Demographic Chart")
-        
+            st.write('Median HouseHold Income')
+            median_col=[]
+            for col in selected_cols_name:
+                if "median_hh" in col:
+                    median_col.append(col)
+                    
+            median_Df=census_df[median_col]
+            fig1=px.line(median_Df)
+            fig1.update_layout(width=1100,height=500)
+            st.plotly_chart(fig1)
+            
+        except:
+            st.write("Demographic Chart")
+    
+    #Gives demographic with all the lines in graph
+    else:  
+        try:
+            fig=px.line(selected_df)
+            fig.update_layout(width=1100,height=500)
+            st.plotly_chart(fig)
+            st.write('Median HouseHold Income')
+            median_col=[]
+            for col in selected_cols_name:
+                if "median_hh" in col:
+                    median_col.append(col)
+                    
+            median_Df=census_df[median_col]
+            fig1=px.line(median_Df)
+            fig1.update_layout(width=1100,height=500)
+            st.plotly_chart(fig1)
+            
+        except:
+            st.write("Demographic Chart")
+
+            
             
     
 #Function to perfomr EDA for revealed dataset
