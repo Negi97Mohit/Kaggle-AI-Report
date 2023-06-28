@@ -8,6 +8,9 @@ from PIL import Image
 st.set_page_config(layout="wide")
 
 def main():
+    image=Image.open('banner.jpg')
+    banner_image=image.resize((1300,500))
+    st.image(banner_image)
     st.markdown('''# **GoDaddy Micro Density**
     A simple App for visual representation of goDaddy Micro Density.
     ''')
@@ -38,9 +41,6 @@ def main():
     # st.write(test_df)
     # st.title("Train")
     # st.write(train_df)
-    image=Image.open('banner.jpg')
-    banner_image=image.resize((1300,500))
-    st.image(banner_image)
     revealed_eda(revealed_test_df)
 
 def census(census_df):
@@ -49,9 +49,22 @@ def census(census_df):
     fb_ppl=st.checkbox("Foreigh Born",)
     it_ppl=st.checkbox("IT Workers")
     hh_inc=st.checkbox("Median House Hold Income")
+    
+    checked_box=[0,0,0,0,0]
+    
+    #if black people checked
     if bb_pct:
-        st.write("bb ppl")
-
+        st.write('Black people')    
+    elif clg_ppl:
+        st.write('college ppl')    
+    elif fb_ppl:
+        st.write('foreign born ppl')    
+    elif it_ppl:
+        st.write('IT ppl')    
+    elif hh_inc:
+        st.write('house hold income')    
+    else:
+        st.write("Select an option bro")
 #Function to perfomr EDA for revealed dataset
 def revealed_eda(revl_df):
     cols1,cols2=st.columns(2)
